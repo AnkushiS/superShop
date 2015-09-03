@@ -44,6 +44,7 @@ public class MoreItems extends HttpServlet {
 	        line += 
 	     			"<tr>" 
 	     			+"<th>" + "product list" + "</th><br>"
+	     			+"<th>" + "price" + "</th><br>"
 	     			+ "</tr>"
 	     			;
 
@@ -52,6 +53,7 @@ public class MoreItems extends HttpServlet {
 							+ "<td><a href= " + "\'" + "productList?name="+ URLEncoder.encode(prod_list.get(i).getProdName())
 							+ "\'" + ">"+ prod_list.get(i).getProdName() + "</a>"
 							+"</td>"
+							+ "<td>" + prod_list.get(i).getPrice() + "</td>"
 							+"</tr>"
 							;
 					}

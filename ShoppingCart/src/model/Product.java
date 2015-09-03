@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="PRODUCTS", schema="TESTDB")
+@Table(name="PRODUCTS")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +24,9 @@ public class Product implements Serializable {
 
 	@Column(name="PROD_NAME")
 	private String prodName;
+
+	@Column(name="PROD_PIC")
+	private String prodPic;
 
 	public Product() {
 	}
@@ -58,6 +61,14 @@ public class Product implements Serializable {
 
 	public void setProdName(String prodName) {
 		this.prodName = prodName;
+	}
+
+	public String getProdPic() {
+		return this.prodPic;
+	}
+
+	public void setProdPic(String prodPic) {
+		this.prodPic = prodPic;
 	}
 
 }

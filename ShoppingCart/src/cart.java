@@ -43,8 +43,11 @@ public class cart extends HttpServlet {
 		line += "<table class=" + "\"table table-striped\""
 				+ "style=width:100%>";
 
-		line += "<tr>" + "<th>" + "product list" + "</th><br>" + "<th>"
-				+ "total Price" + "</th><br>" + "</tr>";
+		line += "<tr>" + "<th>" + "product list" + "</th><br>" 
+				+ "<th>"+ "total Price" + "</th><br>" 
+				+ "</tr>"
+				;
+		
 
 		// get values from the cart table -- all with user_id = session user_id,
 		// get all those values and display
@@ -58,8 +61,10 @@ public class cart extends HttpServlet {
 					.getProdId());
 			CheckoutTotal += cart_val.get(i).getTotalprice();
 
-			line += "<tr>" + "<td>" + prod_list.get(0).getProdName() + "</td>"
-					+ "<td>" + cart_val.get(i).getTotalprice() + "</td>"
+			line += "<tr>" 
+					+ "<td>" + prod_list.get(0).getProdName() +"</td>"
+					+ "<td>" + cart_val.get(i).getTotalprice()+ "<a style=margin-left:20% style=width:30% href= " + "\'" + "DeleteItem?prodId="+ prod_list.get(0).getProdId()
+					+ "\'" + ">"+"Delete Item" + "</a>" + "</td>"
 					+ "</tr>";
 		}
 
@@ -73,11 +78,12 @@ public class cart extends HttpServlet {
 			;
 		
 		line += "</table>";
-
+		
+		session.setAttribute("total_pay", PayTotal);
 		request.setAttribute("message", line);
-		String form_sub =  "<form action=Pay method=post>"
+		String form_sub =  "<form action=AcceptPayment.jsp method=post>"
 				+"<div>"
-				+ "<input class=btn btn-primary type=submit value='Pay' name=sub style=margin-left:20% style=width:30%>"
+				+ "<input class='btn btn-primary' type=submit value='Pay' name=sub style=margin-left:20% style=width:30%>"
 				+"</div>"
 				+"</form>"
 				;
@@ -99,7 +105,7 @@ public class cart extends HttpServlet {
     	
 		int quan = Integer.parseInt(request.getParameter("quan"));
 		
-		String line= "<h3> shopping cart Page</h3>";
+		String line= "<h3> Cart Items</h3>";
         line += "<style>"
 				+ ".bs-example{" + "margin-top:20%" + "margin-left:20%"
 				+  "margin-bottom:20%" + "}"
@@ -129,35 +135,21 @@ public class cart extends HttpServlet {
         cart.setQuantity(quan);
         cart.setTotalprice(totalPrice);
         cart.setCheckId((int) session.getAttribute("user_id"));
+    
+        //check if the prod and user present, if yes then update, else dont do it. 
         
-
-        // check for insert or update of DB
-        List<Cart> usr_prsnt = DBtrans.selectCartOne((int) session.getAttribute("user_id"));
-        if(usr_prsnt == null){
+        List<Cart> prodUsrExists = DBtrans.getCartProdUsr((int) session.getAttribute("user_id"), cart.getProdId());
+        if(prodUsrExists == null){
         	DBtrans.insertCart(cart);
         }else{
-        	for(int i =0; i<usr_prsnt.size(); i++){
-        		int prodId = usr_prsnt.get(i).getProdId();
-        		if(prodId == cart.getProdId()){
-        			System.out.println("in second else");
-        			int quant = usr_prsnt.get(i).getQuantity() + cart.getQuantity();
-            		double tPrice = usr_prsnt.get(i).getTotalprice() + cart.getTotalprice();
-            		int user_id = usr_prsnt.get(0).getCheckId();
-            		DBtrans.UpdateCart(user_id, prodId,quant, tPrice);
-        			
-        		}else{
-        			// if prod ids are different in cart
-        			DBtrans.insertCart(cart);
-        		}	
+        		for(int i =0; i<prodUsrExists.size(); i++){
+                	int quant = prodUsrExists.get(i).getQuantity() + cart.getQuantity();
+            		double tPrice = prodUsrExists.get(i).getTotalprice() + cart.getTotalprice();
+            		int user_id = prodUsrExists.get(0).getCheckId();
+            		DBtrans.UpdateCart(user_id, cart.getProdId(),quant, tPrice);
+        		}
         	}
-        	
-        }
-        
-        
-        
-        
-        
-        
+    		       
         line += "<tr>" 
 				+ "<td>" +session.getAttribute("prod_name")+ "</td>"
 				+ "<td>" + quan + "</td>"
@@ -168,17 +160,15 @@ public class cart extends HttpServlet {
 		line += "</table>";
 		request.setAttribute("message", line);
 		
-		String form_sub =  "<form action=cart method=get>"
+		String form_sub =  "<form action=cart method=get style=margin-left:40% style=width:30%>"
 					+"<div>"
-					+ "<input class=btn btn-primary type=submit value='CheckOut' name=sub style=margin-left:20% style=width:30%>"
+					+ "<input class='btn btn-primary' type=submit value='CheckOut' name=sub >"
 					+"</div>"
 					+"</form>"
 					;
 			
 		request.setAttribute("form_sub", form_sub);
-		
-		
-		
+
         getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);	
  		
 	}

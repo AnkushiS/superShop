@@ -63,6 +63,7 @@ public class productList extends HttpServlet {
 					+ "<td>" + prod_list.get(i).getProdName() + "</td>"
 					+ "<td>" + prod_list.get(i).getDescription() + "</td>"
 					+ "<td>" + prod_list.get(i).getPrice() + "</td>"
+					+ "<td>" + "<img src=" + "\'" + prod_list.get(i).getProdPic() +"\'" +"</img>"+  "</td>"
 					+"</tr>"
 					;
 			session.setAttribute("prod_id" , prod_list.get(i).getProdId());
@@ -74,20 +75,12 @@ public class productList extends HttpServlet {
 		line +=  "<form action=cart method=post>"
 				+"<div>"
 				+ "<input type=text name=quan placeholder=quantity style=margin-left:20% style=width:30%>"
-				+ "<input class=btn btn-primary btn-lg type=submit value='add to Cart' name=sub style=margin-left:20% style=width:30%>"
+				+ "<input class='btn btn-primary btn-lg' type=submit value='add to Cart' name=sub style=margin-left:20% style=width:30%>"
 				+"</div>"
 				+"</form>"
 				;
 		
 		request.setAttribute("message", line);
-
-		String form_back =  "<form action=productList method=post>"
-				+"<div class=input-group input-group-sm style=width:30%>"
-				+ "<input class=btn btn-primary btn-lg type=submit value='GoBack'>"
-				+ "</div>"
-				+"</form>"
-				;
-		 request.setAttribute("form_back", form_back);
 		 getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);	
 	}
 
@@ -126,7 +119,8 @@ public class productList extends HttpServlet {
 		        
 		        line += 
 		     			"<tr>" 
-		     			+"<th>" + "product list" + "</th><br>"
+		     			+"<th>" + "products" + "</th><br>"
+		     			+"<th>" + "Price" + "</th><br>"		     					
 		     			+ "</tr>"
 		     			;
 
@@ -134,7 +128,7 @@ public class productList extends HttpServlet {
 						line += "<tr>"  
 								+ "<td><a href= " + "\'" + "productList?name="+ URLEncoder.encode(prod_list.get(i).getProdName())
 								+ "\'" + ">"+ prod_list.get(i).getProdName() + "</a>"
-								+"</td>"
+								+ "<td>" + prod_list.get(i).getPrice() + "</td>"
 								+"</tr>"
 								;
 						}

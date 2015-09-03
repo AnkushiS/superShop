@@ -9,6 +9,7 @@ import customTools.DBUtils;
 import model.Cart;
 import model.Product;
 import model.User;
+import model.Pay;
 
 public class DBtrans {
 
@@ -192,13 +193,56 @@ public static List<Cart> selectCartAll(){
 	}
 
 
+public static List<Cart> getCartProdUsr(int userId, int prodId){
+	
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	
+	String jpa_sql = "select c from Cart c where c.checkId = :userId and c.prodId = :prodId";   
+			
+	TypedQuery<Cart> mq = em.createQuery(jpa_sql, Cart.class);
+	
+	mq.setParameter("userId", userId);
+	mq.setParameter("prodId", prodId);
+	List<Cart> carts;
+	
+	try{
+		carts = mq.getResultList();
+		if(carts==null || carts.isEmpty()){
+			carts=null;
+		}
+	}finally {
+		em.close();
+	}
+	return carts;
+	}
+
+public static void DeleteItem(int prodId){
+	
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	
+	String jpa_sql = "Delete from Cart c where c.prodId = :prodId";   
+			
+	TypedQuery<Cart> mq = em.createQuery(jpa_sql, Cart.class);
+	
+	mq.setParameter("prodId", prodId);
+	EntityTransaction trans = em.getTransaction();
+	trans.begin();
+	try {
+		mq.executeUpdate();
+		trans.commit();
+	} catch (Exception e) {
+		System.out.println(e);
+		trans.rollback();
+	} finally {
+		em.close();
+	}
+	}
 
 public static void UpdateCart(int userId, int prodId, int quant, double tPrice){
 	
 	EntityManager em = DBUtils.getEmFactory().createEntityManager();
 	
 	String jpa_sql = "Update Cart c set c.quantity = :quant, c.totalprice = :tPrice where c.prodId= :prodId and c.checkId = :userId";   
-	System.out.println(jpa_sql);	
 	TypedQuery<Cart> mq = em.createQuery(jpa_sql, Cart.class);
 	
 	mq.setParameter("quant", quant);
@@ -218,4 +262,21 @@ public static void UpdateCart(int userId, int prodId, int quant, double tPrice){
 	}
 	
 	}
+
+public static void insertPay(Pay pay) {
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	EntityTransaction trans = em.getTransaction();
+	trans.begin();
+	try {
+		em.persist(pay);
+		trans.commit();
+	} catch (Exception e) {
+		System.out.println(e);
+		trans.rollback();
+	} finally {
+		em.close();
+	}
+}
+
+
 }
