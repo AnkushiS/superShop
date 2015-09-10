@@ -29,26 +29,17 @@
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="MoreItems">Browse</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="cart">Cart</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="Admin">Admin</a>
-				<a class="navbar-brand" style="background-color: #e3f2fd" href="storeCredit">Store Credit</a>
+			<a class="navbar-brand" style="background-color: #e3f2fd" href="storeCredit">Store Credit</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="Register?method=post">Logout</a>
 		</div>
 	</nav>
 	
-	<h4>
-	Welcome! 
-		${cookie.usernamecookie.value}
-	</h4>
+	<form action="storeCredit" method="get">
+         <div class="form-group" style="width:30%">
+              <a class="btn btn-primary btn-lg" role="button" href="StoreCredit">Apply for Store Credit</a>
+        </div>
+	</form>   
+	
 	<div>
 	${message}
 	</div>
-	
-	<div class="bs-example">
-	
-	${form_sub}
-	</div>
-	<div class="bs-example">
-	
-	${form_back}
-	</div>
-</body>
-</html>

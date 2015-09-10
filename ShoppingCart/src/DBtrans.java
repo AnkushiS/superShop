@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import customTools.DBUtils;
 import model.Cart;
 import model.Product;
+import model.Sold;
 import model.User;
 import model.Pay;
 
@@ -193,6 +194,27 @@ public static List<Cart> selectCartAll(){
 	}
 
 
+public static List<Sold> selectSoldAll(){
+	
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	
+	String jpa_sql = "select c from Sold c";   
+			
+	TypedQuery<Sold> mq = em.createQuery(jpa_sql, Sold.class);
+
+	List<Sold> carts;
+	
+	try{
+		carts = mq.getResultList();
+		if(carts==null || carts.isEmpty()){
+			carts=null;
+		}
+	}finally {
+		em.close();
+	}
+	return carts;
+	}
+
 public static List<Cart> getCartProdUsr(int userId, int prodId){
 	
 	EntityManager em = DBUtils.getEmFactory().createEntityManager();
@@ -238,6 +260,30 @@ public static void DeleteItem(int prodId){
 	}
 	}
 
+
+public static void EmptyCart(int userId){
+	
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	
+	String jpa_sql = "Delete from Cart c where c.checkId = :userId";   
+			
+	TypedQuery<Cart> mq = em.createQuery(jpa_sql, Cart.class);
+	
+	mq.setParameter("userId", userId);
+	EntityTransaction trans = em.getTransaction();
+	trans.begin();
+	try {
+		mq.executeUpdate();
+		trans.commit();
+	} catch (Exception e) {
+		System.out.println(e);
+		trans.rollback();
+	} finally {
+		em.close();
+	}
+	}
+
+
 public static void UpdateCart(int userId, int prodId, int quant, double tPrice){
 	
 	EntityManager em = DBUtils.getEmFactory().createEntityManager();
@@ -277,6 +323,44 @@ public static void insertPay(Pay pay) {
 		em.close();
 	}
 }
+
+public static void insertSold(Sold sold) {
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	EntityTransaction trans = em.getTransaction();
+	trans.begin();
+	try {
+		em.persist(sold);
+		trans.commit();
+	} catch (Exception e) {
+		System.out.println(e);
+		trans.rollback();
+	} finally {
+		em.close();
+	}
+}
+
+public static List<Pay> getPayDet(int userid) {
+	
+EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	
+	String jpa_sql = "select c from Pay c where c.userId = :userId";   
+			
+	TypedQuery<Pay> mq = em.createQuery(jpa_sql, Pay.class);
+	
+	mq.setParameter("userId", userid);
+	
+	List<Pay> carts;
+	
+	try{
+		carts = mq.getResultList();
+		if(carts==null || carts.isEmpty()){
+			carts=null;
+		}
+	}finally {
+		em.close();
+	}
+	return carts;
+	}
 
 
 }

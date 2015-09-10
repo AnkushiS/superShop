@@ -98,6 +98,11 @@ public class productList extends HttpServlet {
 			if(ulist == null){
 				request.setAttribute("message", "Register to proceed ahead");
 				getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);	
+				for (int i = 0; i < ulist.size(); i++){
+					if(ulist.get(i).getUserName().equalsIgnoreCase(request.getParameter("user_name"))){
+						session.setAttribute("user_id", ulist.get(i).getUserId());
+					}
+				}
 								
 			}else {
 			// set cookie attributes
@@ -135,9 +140,9 @@ public class productList extends HttpServlet {
 				
 				line += "</table>";		
 				
-				for (int i = 0; i < ulist.size(); i++){
-					if(ulist.get(i).getUserName().equalsIgnoreCase(request.getParameter("user_name"))){
-						session.setAttribute("user_id", ulist.get(i).getUserId());
+				for (User u_list : ulist){
+					if(u_list.getUserName().equalsIgnoreCase(request.getParameter("user_name"))){
+						session.setAttribute("user_id", u_list.getUserId());
 					}
 				}
 				

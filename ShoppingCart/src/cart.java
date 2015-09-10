@@ -55,6 +55,11 @@ public class cart extends HttpServlet {
 		List<Cart> cart_val = DBtrans.selectCartOne((int) session
 				.getAttribute("user_id"));
 		double CheckoutTotal = 0;
+		if(cart_val == null){
+			request.setAttribute("form_sub", "<h3>cart is Empty</h3>");
+			getServletContext().getRequestDispatcher("/output.jsp").forward(
+					request, response);
+		}
 		for (int i = 0; i < cart_val.size(); i++) {
 
 			List<Product> prod_list = DBtrans.selectProdOneID(cart_val.get(i)
@@ -81,9 +86,9 @@ public class cart extends HttpServlet {
 		
 		session.setAttribute("total_pay", PayTotal);
 		request.setAttribute("message", line);
-		String form_sub =  "<form action=AcceptPayment.jsp method=post>"
+		String form_sub =  "<form action=Pay method=Get>"
 				+"<div>"
-				+ "<input class='btn btn-primary' type=submit value='Pay' name=sub style=margin-left:20% style=width:30%>"
+				+ "<input class='btn btn-primary' type=submit value='Pay' style=margin-left:20% style=width:30%>"
 				+"</div>"
 				+"</form>"
 				;

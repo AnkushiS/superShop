@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Cart;
 import model.Product;
+import model.Sold;
 import model.User;
 
 /**
@@ -33,7 +34,7 @@ public class Admin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//see all the orders ever placed
-		List<Cart> admin_cart = DBtrans.selectCartAll();
+		List<Sold> admin_cart = DBtrans.selectSoldAll();
 		
 		double CheckoutTotal=0;
 		
