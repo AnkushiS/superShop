@@ -46,7 +46,7 @@ public class Pay extends HttpServlet {
 			
 			}else{
 				
-				line += "<h3> Payment details present in the system <h3>";
+				line += "<h4> Payment details present in the system </h4>";
 				
 				
 				line += "<style>" + ".bs-example{" + "margin-top:20%"
@@ -56,7 +56,7 @@ public class Pay extends HttpServlet {
 						+ " word-wrap: break-word;" + "}" + "</style>";
 
 				line += "<table class=" + "\"table table-striped\""
-						+ "style=width:50%>";
+						+ "style=width:100%>";
 
 				line += "<tr>" + "<th>" + "Full Name" + "</th><br>" 
 						+ "<th>"+ "Card Num" + "</th><br>"
@@ -74,14 +74,16 @@ public class Pay extends HttpServlet {
 							+ "<td>" + pres_val.getBilladr1() + "<br/>" + pres_val.getBilladr2()+"</td>"
 							+ "</tr>";
 				}	
-				request.setAttribute("message", line);
+				
+				line += "</table>";
+				request.setAttribute("form_sub", line);
 				form_sub =  "<form action=PayDisp.jsp method=Post>"
 						+"<div>"
 						+ "<input class='btn btn-primary' type=submit value='Use same Address' name='use' style=margin-left:20% style=width:30%>"
 						+"</div>"
 						+"</form>"
 						;
-				request.setAttribute("form_sub", form_sub);
+				request.setAttribute("form_back", form_sub);
 				getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
 			}
 			
@@ -130,7 +132,6 @@ public class Pay extends HttpServlet {
 		DBtrans.insertSold(sold);
 		//delete from cart all items for this user name
 		DBtrans.EmptyCart((int)request.getSession().getAttribute("user_id"));
-		
 		
         request.setAttribute("message", "payment added to system");
 

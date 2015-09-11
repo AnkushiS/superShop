@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="USERS", schema="TESTDB")
+@Table(name="USERS")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,6 +26,8 @@ public class User implements Serializable {
 	private int orderId;
 
 	private String password;
+
+	private double storecredit;
 
 	@Column(name="USER_MOTTO")
 	private String userMotto;
@@ -66,6 +68,14 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public double getStorecredit() {
+		return this.storecredit;
+	}
+
+	public void setStorecredit(double storecredit) {
+		this.storecredit = storecredit;
 	}
 
 	public String getUserMotto() {

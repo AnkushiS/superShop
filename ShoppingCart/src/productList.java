@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Comment;
 import model.Product;
 import model.User;
 
@@ -66,6 +68,7 @@ public class productList extends HttpServlet {
 					+ "<td>" + "<img src=" + "\'" + prod_list.get(i).getProdPic() +"\'" +"</img>"+  "</td>"
 					+"</tr>"
 					;
+			
 			session.setAttribute("prod_id" , prod_list.get(i).getProdId());
 			session.setAttribute("prod_name", prod_list.get(i).getProdName());
 			}
@@ -79,6 +82,15 @@ public class productList extends HttpServlet {
 				+"</div>"
 				+"</form>"
 				;
+		
+		System.out.println(URLDecoder.decode(request.getParameter("name")));
+		List<Comment> cmts = DBtrans.selectCommentsAll(request.getParameter("name"));
+		for(Comment cmnts : cmts){
+			
+		}
+		
+		
+		
 		
 		request.setAttribute("message", line);
 		 getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);	

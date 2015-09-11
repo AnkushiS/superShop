@@ -36,18 +36,20 @@
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="MoreItems">Browse</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="cart">Cart</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="Admin">Admin</a>
-			<a class="navbar-brand" style="background-color: #e3f2fd" href="storeCredit">Store Credit</a>
+			<a class="navbar-brand" style="background-color: #e3f2fd" href="StoreCredit.jsp">Store Credit</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="Register?method=post">Logout</a>
 		</div>
 	</nav>
 	
-	<form action="storeCredit" method="get">
+	
          <div class="form-group" style="width:30%">
-              <a class="btn btn-primary btn-lg" role="button" href="storeCredit" onclick="showDiv()">Apply for Store Credit</a>
+              <a class="btn btn-primary btn-lg" role="button" onclick="showDiv()">Apply for Store Credit</a>
         </div>
         
-        <div id="welcomeDiv"  style="display:none;" class="bs-example" > put in credit
-		<input type="text" name="answer" value="add credit"  />
+        <form action="storeCredit" method="get" class="bs-example" style="display:none;" id="welcomeDiv">
+        <div  class="bs-example"  style="width:30%">
+  			<input type="text" class="form-control" name= "credit" placeholder="Add Credit" ><br/>
+			<input class="btn btn-primary btn-lg" type="submit" value="add credit" ></input>
 		</div>
   	</form>   
 	

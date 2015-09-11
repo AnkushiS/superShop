@@ -74,13 +74,42 @@ public class cart extends HttpServlet {
 		}
 
 		double tax = 0.06;
+		line += "<tr>"
+				+ "<td>" + "" + "</td>"
+				+ "<td><strong>" + "Tax @ 6%: " + (tax * CheckoutTotal) + "</strong></td>"
+				+"<tr>"
+				;
+		
 		double PayTotal = (tax * CheckoutTotal) + CheckoutTotal;
+		
+		double storeCredit = 0;
+		List<User> usr_list = DBtrans.selectUsr(session.getAttribute("user_name").toString());
+		for(User usr : usr_list){
+			storeCredit = usr.getStorecredit();
+		}
+		
+		System.out.println("$$$$$$$$$$" + storeCredit);
+		
 	
 		line += "<tr>"
 			+ "<td>" + "" + "</td>"
-			+ "<td><strong>" + "Total Pay: " + PayTotal + "</strong></td>"
+			+ "<td><strong>" + "Item TotalPay: " + PayTotal + "</strong></td>"
 			+"<tr>"
 			;
+		
+		PayTotal = PayTotal - storeCredit;
+		
+		line += "<tr>"
+				+ "<td>" + "" + "</td>"
+				+ "<td><strong>" + "Store Credit: " + storeCredit + "</strong></td>"
+				+"<tr>"
+				;
+		
+		line += "<tr>"
+				+ "<td>" + "" + "</td>"
+				+ "<td><strong>" + "Total Pay: " + PayTotal + "</strong></td>"
+				+"<tr>"
+				;
 		
 		line += "</table>";
 		

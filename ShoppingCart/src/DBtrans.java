@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import customTools.DBUtils;
 import model.Cart;
+import model.Comment;
 import model.Product;
 import model.Sold;
 import model.User;
@@ -383,6 +384,32 @@ EntityManager em = DBUtils.getEmFactory().createEntityManager();
 	}
 	return carts;
 	}
+
+public static void UpdateUser(String usrname, double credit) {
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	String sql = "Update User u set u.storecredit = :credit where u.userName = :usrname";
+	TypedQuery<User> mq = em.createQuery(sql, User.class);
+
+	mq.setParameter("usrname", usrname);
+	mq.setParameter("credit", credit);
+	EntityTransaction trans = em.getTransaction();
+	trans.begin();
+	try {
+		mq.executeUpdate();
+		trans.commit();
+	} catch (Exception e) {
+		System.out.println(e);
+		trans.rollback();
+	} finally {
+		em.close();
+	}
+	
+	}
+
+public static List<Comment> selectCommentsAll(String parameter) {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 
 }

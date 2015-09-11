@@ -25,6 +25,7 @@
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="MoreItems">Browse</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="cart">Cart</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="Admin">Admin</a>
+			<a class="navbar-brand" style="background-color: #e3f2fd" href="StoreCredit.jsp">Store Credit</a>
 			<a class="navbar-brand" style="background-color: #e3f2fd" href="Register?method=post">Logout</a>
 		</div>
 	</nav>

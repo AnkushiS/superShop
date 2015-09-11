@@ -1,6 +1,7 @@
 
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import model.User;
 
 /**
  * Servlet implementation class storeCredit
@@ -29,29 +32,26 @@ public class storeCredit extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		session.setAttribute("credit", request.getParameter("credit"));
 		
-		String form_sub = "";
-		
+		String form_sub = "Sent it to Admin for approval";
 		//ask for amount and submit 
 		
-		form_sub =  "<form action=storeCredit method=Post>"
-				+"<div>"
-				+ "<input class='btn btn-primary' type=submit value='Add credit' name='use' style=margin-left:20% style=width:30%>"
-				+"</div>"
-				+"</form>"
-				;
+		// check if DB has it, then sent the updated credit to update user table
+		List<User> usr = DBtrans.selectUsr(session.getAttribute("user_name").toString());
+		
+		if(usr != null){
+			double credit = usr.get(0).getStorecredit();
+			credit =  Double.valueOf(request.getParameter("credit")) + credit;
+			System.out.println(credit);
+			DBtrans.UpdateUser(session.getAttribute("user_name").toString(), Double.valueOf(request.getParameter("credit")));
+		}else{
+			// put into DB. 
+			DBtrans.UpdateUser(session.getAttribute("user_name").toString(), Double.valueOf(request.getParameter("credit")));
+		}
+		
 		request.setAttribute("form_sub", form_sub);
 		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
-		
-		//check if DB has credit or not, add it to new credit if available else insert store credit
-		 
-		
-		
-		
-	
-		
-		
-		
 		
 		
 	}
