@@ -30,6 +30,25 @@ public class storeCredit extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
+		String form_sub = "";
+		
+		//ask for amount and submit 
+		
+		form_sub =  "<form action=storeCredit method=Post>"
+				+"<div>"
+				+ "<input class='btn btn-primary' type=submit value='Add credit' name='use' style=margin-left:20% style=width:30%>"
+				+"</div>"
+				+"</form>"
+				;
+		request.setAttribute("form_sub", form_sub);
+		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
+		
+		//check if DB has credit or not, add it to new credit if available else insert store credit
+		 
+		
+		
+		
+	
 		
 		
 		

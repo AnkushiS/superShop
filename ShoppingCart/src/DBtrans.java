@@ -215,6 +215,28 @@ public static List<Sold> selectSoldAll(){
 	return carts;
 	}
 
+public static List<Sold> selectSoldOne(int UserId){
+	
+	EntityManager em = DBUtils.getEmFactory().createEntityManager();
+	
+	String jpa_sql = "select c from Sold c where c.checkId = :UserId";   
+			
+	TypedQuery<Sold> mq = em.createQuery(jpa_sql, Sold.class);
+	mq.setParameter("UserId", UserId);
+	List<Sold> carts;
+	
+	try{
+		carts = mq.getResultList();
+		if(carts==null || carts.isEmpty()){
+			carts=null;
+		}
+	}finally {
+		em.close();
+	}
+	return carts;
+	}
+
+
 public static List<Cart> getCartProdUsr(int userId, int prodId){
 	
 	EntityManager em = DBUtils.getEmFactory().createEntityManager();
